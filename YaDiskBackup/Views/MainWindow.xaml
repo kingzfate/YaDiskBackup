@@ -1,0 +1,76 @@
+﻿<Window x:Class="YaDiskBackup.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:YaDiskBackup"
+        xmlns:vm="clr-namespace:YaDiskBackup.ViewModels"
+        xmlns:p="clr-namespace:YaDiskBackup.Properties"
+        mc:Ignorable="d"
+        Title="YaDiskBackup" 
+        Height="232" 
+        Width="301"
+        MinHeight="170"
+        MinWidth="270" Closed="Window_Closed">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150*"/>
+            <RowDefinition Height="30*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="200">
+            <TextBlock Text="Destination folder" 
+                       ToolTip="Folder in Yandex Disk where files will be copied" />
+            <TextBox Text="{Binding Source={x:Static p:Settings.Default}, Path=DestinationFolder, Mode=TwoWay}"/>
+            <TextBlock Text="Source path"
+                       ToolTip="Path from the local computer where data will be taken for copying " />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40*" />
+                    <ColumnDefinition Width="140*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Content="..."
+                        Command="{Binding OpenFolderCommand}"/>
+                <TextBox Grid.Column="1" 
+                         Text="{Binding Source={x:Static p:Settings.Default}, Path=SourcePath, Mode=TwoWay}" />
+            </Grid>
+
+            <TextBlock Text="Token" 
+                       ToolTip="Yandex token" />
+            <TextBox Text="{Binding Source={x:Static p:Settings.Default}, Path=Token, Mode=TwoWay}"/>
+            <CheckBox Content="Search in subdirectories"
+                      IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=IsSearchSubdir, Mode=TwoWay}"
+                      ToolTip="Search for files to copy in subdirectories "/>
+        </StackPanel>
+
+        <Grid Grid.Column="0" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Content="Enable" 
+                    Command="{Binding EnableWatcherCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="IsEnabled" Value="{Binding IsPaused}" />
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Grid.Column="1" 
+                    Content="Disable"
+                    Command="{Binding DisableWatcherCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="IsEnabled" Value="{Binding IsRunning}" />
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>
