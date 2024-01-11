@@ -1,19 +1,18 @@
 ﻿using System.Windows;
 using YaDiskBackup.Client.ViewModels;
 
-namespace YaDiskBackup.Client.Views
-{
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-            DataContext = new MainViewModel();
-        }
+namespace YaDiskBackup.Client.Views;
 
-        private void Window_Closed(object sender, System.EventArgs e) => Properties.Settings.Default.Save();
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+        //DataContext = new MainWindowViewModel();
     }
+
+    //private void Window_Closed(object sender, System.EventArgs e) => Properties.Settings.Default.Save();
 }
