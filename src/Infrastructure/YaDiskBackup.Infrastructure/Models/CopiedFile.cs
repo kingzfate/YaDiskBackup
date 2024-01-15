@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace YaDiskBackup.Client.Models
+﻿namespace YaDiskBackup.Infrastructure.Models
 {
     /// <summary>
     /// Копируемые файлы
     /// </summary>
-    internal class CopiedFile
+    public class CopiedFile
     {
         /// <summary>
         /// Время копирования

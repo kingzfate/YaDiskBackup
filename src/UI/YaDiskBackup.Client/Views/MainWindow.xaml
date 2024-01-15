@@ -1,12 +1,30 @@
-﻿<Window x:Class="YaDiskBackup.Client.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:YaDiskBackup.Client"
-        xmlns:vm="clr-namespace:YaDiskBackup.Client.ViewModels"
-        xmlns:p="clr-namespace:YaDiskBackup.Client.Properties"
-        Title="YaDiskBackup" Height="230" Width="650" MinHeight="170" MinWidth="270">
+﻿<Window 
+    Title="YaDiskBackup" Height="230" Width="650" MinHeight="170" MinWidth="270"
+    WindowStartupLocation="CenterScreen"
+    d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
+    mc:Ignorable="d"
+    x:Class="YaDiskBackup.Client.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:core="clr-namespace:YaDiskBackup.Shared.Constants;assembly=YaDiskBackup.Shared"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:r="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.WPF"
+    xmlns:regions="http://prismlibrary.com/"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:vm="clr-namespace:YaDiskBackup.Client.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:p="clr-namespace:YaDiskBackup.Domain.Properties;assembly=YaDiskBackup.Domain" Closed="SaveData">
+    <!-- -->
+    <!-- x:Class="YaDiskBackup.Client.Views.MainWindow" -->
+    <!--     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" -->
+    <!--     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" -->
+    <!--     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" -->
+    <!--     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" -->
+    <!--     xmlns:local="clr-namespace:YaDiskBackup.Client" -->
+    <!--     xmlns:vm="clr-namespace:YaDiskBackup.Client.ViewModels" -->
+    <!--     xmlns:p="clr-namespace:YaDiskBackup.Client.Properties" -->
+    <!--     Title="YaDiskBackup" Height="230" Width="650" MinHeight="170" MinWidth="270"> -->
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -20,7 +38,7 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="190">
                     <TextBlock Text="Destination folder" ToolTip="Folder in Yandex Disk where files will be copied"/>
-                    <TextBox Text="{Binding Source={x:Static p:Settings.Default}, Path=DestinationFolder, Mode=TwoWay}">
+                    <TextBox Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=DestinationFolder, Mode=TwoWay}">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type TextBox}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
@@ -33,14 +51,14 @@
                             <ColumnDefinition Width="40*"/>
                             <ColumnDefinition Width="140*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="..." Command="{Binding OpenFolderCommand}">
+                        <Button Grid.Column="0" Content="..." Command="{Binding Browse}">
                             <FrameworkElement.Style>
                                 <Style TargetType="{x:Type Button}">
                                     <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
                                 </Style>
                             </FrameworkElement.Style>
                         </Button>
-                        <TextBox Grid.Column="1" Text="{Binding Source={x:Static p:Settings.Default}, Path=SourcePath, Mode=TwoWay}">
+                        <TextBox Grid.Column="1" Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=SourcePath, Mode=TwoWay}">
                             <FrameworkElement.Style>
                                 <Style TargetType="{x:Type TextBox}">
                                     <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
@@ -49,7 +67,7 @@
                         </TextBox>
                     </Grid>
                     <TextBlock Text="Token" ToolTip="Yandex token"/>
-                    <TextBox Text="{Binding Source={x:Static p:Settings.Default}, Path=Token, Mode=TwoWay}">
+                    <TextBox Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=Token, Mode=TwoWay}">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type TextBox}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
@@ -57,7 +75,7 @@
                         </FrameworkElement.Style>
                     </TextBox>
                     <CheckBox Content="Search in subdirectories" ToolTip="Search for files to copy in subdirectories "
-                    IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=IsSearchSubdir, Mode=TwoWay}">
+                    IsChecked="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=IsSearchSubdir, Mode=TwoWay}">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type CheckBox}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
@@ -65,19 +83,19 @@
                         </FrameworkElement.Style>
                     </CheckBox>
                 </StackPanel>
-                <Grid Column="0" Row="3">
+                <Grid Column="0" Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Enable" Command="{Binding EnableWatcherCommand}">
+                    <Button Content="Enable" Command="{Binding EnableBackup}">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
                             </Style>
                         </FrameworkElement.Style>
                     </Button>
-                    <Button Grid.Column="1" Content="Disable" Command="{Binding DisableWatcherCommand}">
+                    <Button Grid.Column="1" Content="Disable" Command="{Binding DisableBackup}">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsRunning}"/>

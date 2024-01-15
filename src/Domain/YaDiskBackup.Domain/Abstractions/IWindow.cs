@@ -2,5 +2,5 @@
 
 public interface IWindow
 {
-    
+    void SelectSourcePath();
 }

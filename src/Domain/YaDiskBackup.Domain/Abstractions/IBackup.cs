@@ -1,6 +1,8 @@
-﻿namespace YaDiskBackup.Domain.Abstractions;
+﻿//namespace YaDiskBackup.Domain.Abstractions;
 
-public interface IBackup
-{
-    
-}
+//public interface IBackup
+//{
+//    void Enable();
+
+//    void Disable();
+//}

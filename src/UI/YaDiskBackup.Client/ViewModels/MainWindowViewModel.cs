@@ -1,15 +1,120 @@
-﻿
-
+﻿using Reactive.Bindings;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using YaDiskBackup.Domain.Abstractions;
+using YaDiskBackup.Domain.Properties;
+using YaDiskBackup.Infrastructure.Models;
 using YaDiskBackup.Shared.ViewModels;
+using YandexDisk.Client.Http;
+using YandexDisk.Client.Protocol;
 
 namespace YaDiskBackup.Client.ViewModels;
 
 /// <summary>
 /// View model for main view
 /// </summary>
-internal class MainWindowViewModel : NavigationViewModelBase
+public class MainWindowViewModel : NavigationViewModelBase
 {
-    /*public ObservableCollection<CopiedFile> CopiedFiles { get; set; } = new ObservableCollection<CopiedFile>();
+    public ReactiveProperty<IList<CopiedFile>> CopiedFiles { get; } = new();
+
+    public AsyncReactiveCommand Browse { get; } = new();
+    public AsyncReactiveCommand EnableBackup { get; } = new();
+    public AsyncReactiveCommand DisableBackup { get; } = new();
+
+    /// <inheritdoc />
+    public MainWindowViewModel(
+        IWindow window)
+    {
+        Browse.Subscribe(async _ =>
+        {
+            window.SelectSourcePath();
+        });
+
+        EnableBackup.Subscribe(async _ =>
+        {
+            FileSystemWatcher watcher = new();
+            watcher = new FileSystemWatcher(ApplicationSettings.Default.SourcePath)
+            {
+                IncludeSubdirectories = ApplicationSettings.Default.IsSearchSubdir,
+                EnableRaisingEvents = true
+            };
+            watcher.NotifyFilter |= NotifyFilters.LastWrite;
+            watcher.Created += new FileSystemEventHandler(OnCreated);
+        });
+    }
+
+
+    //TODO не работает
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="e"></param>
+    private async void OnCreated(object source, FileSystemEventArgs e)
+    {
+        if(CopiedFiles != null)
+        {
+            CopiedFiles.Value = new List<CopiedFile>();
+        }
+        //using DiskHttpApi api = new(ApplicationSettings.Default.Token);
+
+        //ResourceRequest request = new()
+        //{
+        //    Path = "/"
+        //};
+        //CancellationToken cancellationToken = new();
+        //if (!(await api.MetaInfo.GetInfoAsync(request, cancellationToken)).Embedded.Items.Any(item => item.Type == ResourceType.Dir && item.Name.Equals(ApplicationSettings.Default.DestinationFolder)))
+        //{
+        //    Link dictionaryAsync = await api.Commands.CreateDictionaryAsync("/" + ApplicationSettings.Default.DestinationFolder);
+        //}
+        //Link uploadLinkAsync = await api.Files.GetUploadLinkAsync("/" + ApplicationSettings.Default.DestinationFolder + "/" + e.Name.Split('\\').Last(), true);
+        do
+        { }
+        while (IsFileLocked(new FileInfo(e.FullPath)));
+
+        //using (FileStream fs = File.OpenRead(e.FullPath))
+        //    await api.Files.UploadAsync(uploadLinkAsync, fs);
+
+        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+        {
+            CopiedFiles.Value.Add(new CopiedFile
+            {
+                Time = DateTime.Now.ToLocalTime(),
+                FileName = (e.Name.Split('\\')).Last()
+            });
+        });
+    }
+
+    protected bool IsFileLocked(FileInfo file)
+    {
+        try
+        {
+            using FileStream fileStream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None);
+            fileStream.Close();
+        }
+        catch
+        {
+            return true;
+        }
+        return false;
+    }
+
+}
+    
+    
+    // public DelegateCommand OpenFolderCommand => new(() =>
+    // {
+    //     using FolderBrowserDialog folderBrowserDialog = new();
+    //     if (folderBrowserDialog.ShowDialog() != DialogResult.OK) return;
+    //
+    //     Settings.Default.SourcePath = folderBrowserDialog.SelectedPath;
+    // });
+    
+    /*
+     public ObservableCollection<CopiedFile> CopiedFiles { get; set; } = new ObservableCollection<CopiedFile>();
     public bool IsPaused { get; set; } = true;
     public bool IsRunning { get; set; } = false;
 
@@ -99,5 +204,6 @@ internal class MainWindowViewModel : NavigationViewModelBase
             return true;
         }
         return false;
-    }*/
+    }
 }
+    */

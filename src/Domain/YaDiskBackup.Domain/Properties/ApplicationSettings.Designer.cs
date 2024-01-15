@@ -8,18 +8,30 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YaDiskBackup.Client.Properties {
+namespace YaDiskBackup.Domain.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    public partial class ApplicationSettings : global::System.Configuration.ApplicationSettingsBase {
         
-        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        private static ApplicationSettings defaultInstance = ((ApplicationSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new ApplicationSettings())));
         
-        public static Settings Default {
+        public static ApplicationSettings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsSearchSubdir {
+            get {
+                return ((bool)(this["IsSearchSubdir"]));
+            }
+            set {
+                this["IsSearchSubdir"] = value;
             }
         }
         
@@ -56,18 +68,6 @@ namespace YaDiskBackup.Client.Properties {
             }
             set {
                 this["Token"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsSearchSubdir {
-            get {
-                return ((bool)(this["IsSearchSubdir"]));
-            }
-            set {
-                this["IsSearchSubdir"] = value;
             }
         }
     }
