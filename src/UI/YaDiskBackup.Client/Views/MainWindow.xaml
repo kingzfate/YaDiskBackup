@@ -1,7 +1,7 @@
 ﻿<Window 
     Title="YaDiskBackup" Height="230" Width="650" MinHeight="170" MinWidth="270"
     WindowStartupLocation="CenterScreen"
-    d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
+    d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d"
     x:Class="YaDiskBackup.Client.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -104,7 +104,7 @@
                     </Button>
                 </Grid>
             </Grid>
-            <ListView x:Name="listView" Grid.Column="1" HorizontalAlignment="Stretch" ItemsSource="{Binding CopiedFiles.Value, Mode=TwoWay}">
+            <ListView x:Name="listView" Grid.Column="1" HorizontalAlignment="Stretch" ItemsSource="{Binding list}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Time}"/>

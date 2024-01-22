@@ -10,7 +10,13 @@ namespace YaDiskBackup.Infrastructure.Services;
 
 public class Backup : IBackup, ISingletonLifetime
 {
-    public IObservableCache<CopiedFile, long> Live { get; }
+    public Backup()
+    {
+        Live ??= new SourceList<CopiedFile>();
+    }
+
+    //public IObservableCache<CopiedFile, long> Live { get; set; } = new();
+    public SourceList<CopiedFile> Live { get; set; }
 
     FileSystemWatcher watcher = new();
 
@@ -37,10 +43,10 @@ public class Backup : IBackup, ISingletonLifetime
     /// <param name="e"></param>
     private async void OnCreated(object source, FileSystemEventArgs e)
     {
-        //if (CopiedFiles.Value == null)
-        //{
-        //    CopiedFiles.Value = new List<CopiedFile>();
-        //}
+        if (Live == null)
+        {
+            Live = new SourceList<CopiedFile>();
+        }
         //using DiskHttpApi api = new(ApplicationSettings.Default.Token);
 
         //ResourceRequest request = new()
@@ -68,7 +74,11 @@ public class Backup : IBackup, ISingletonLifetime
         //        FileName = (e.Name.Split('\\')).Last()
         //    });
         //});
-       // Live = new Source
+        Live.Add(new CopiedFile
+        {
+            Time = DateTime.Now.ToLocalTime(),
+            FileName = (e.Name.Split('\\')).Last()
+        });
     }
 
     protected bool IsFileLocked(FileInfo file)

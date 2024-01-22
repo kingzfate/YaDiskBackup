@@ -7,7 +7,9 @@ public interface IBackup
 {
     void Enable();
 
-    IObservableCache<CopiedFile, long> Live { get; }
+    //IObservableCache<CopiedFile, long> Live { get; }
+
+    SourceList<CopiedFile> Live { get; set; }
 
     void Disable();
 }

@@ -9,7 +9,7 @@ namespace YaDiskBackup.Domain.Models
     {
         private readonly CopiedFile _file;
 
-        public CopiedFile(CopiedFile file) 
+        public CopiedFile(CopiedFile file=null) 
         {
             _file = file;
         }

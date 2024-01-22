@@ -20,9 +20,9 @@ namespace YaDiskBackup.Client.ViewModels;
 public class MainWindowViewModel : NavigationViewModelBase
 {
     public ReactiveProperty<IList<CopiedFile>> CopiedFiles { get; } = new();
-    ReadOnlyObservableCollection<CopiedFile> list;
+    public ReadOnlyObservableCollection<CopiedFile> list;
 
-    public ReactiveUI.ReactiveCommand Browse { get; } = new();
+    public AsyncReactiveCommand Browse { get; } = new();
     public AsyncReactiveCommand EnableBackup { get; } = new();
     public AsyncReactiveCommand DisableBackup { get; } = new();
 
@@ -41,14 +41,14 @@ public class MainWindowViewModel : NavigationViewModelBase
             backup.Enable();
 
             backup.Live.Connect()
-                .Transform(file => new CopiedFile(file))
-                .ObserveOnDispatcher()
-                .Bind(out list)
-                .DisposeMany()
-                .Subscribe();
+                 .Transform(file => new CopiedFile(file))
+                 .ObserveOnDispatcher()
+                 .Bind(out list)
+                 .DisposeMany()
+                 .Subscribe();
         });
 
-       
+        
 
 
         //EnableBackup.Subscribe(async _ =>
@@ -100,11 +100,11 @@ public class MainWindowViewModel : NavigationViewModelBase
 
         //System.Windows.Application.Current.Dispatcher.Invoke(() =>
         //{
-            CopiedFiles.Value.Add(new CopiedFile
-            {
-                Time = DateTime.Now.ToLocalTime(),
-                FileName = (e.Name.Split('\\')).Last()
-            });
+            //CopiedFiles.Value.Add(new CopiedFile
+            //{
+            //    Time = DateTime.Now.ToLocalTime(),
+            //    FileName = (e.Name.Split('\\')).Last()
+            //});
        // });
     }
 
