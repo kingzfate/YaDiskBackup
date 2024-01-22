@@ -1,8 +1,13 @@
-﻿//namespace YaDiskBackup.Domain.Abstractions;
+﻿using DynamicData;
+using YaDiskBackup.Domain.Models;
 
-//public interface IBackup
-//{
-//    void Enable();
+namespace YaDiskBackup.Domain.Abstractions;
 
-//    void Disable();
-//}
+public interface IBackup
+{
+    void Enable();
+
+    IObservableCache<CopiedFile, long> Live { get; }
+
+    void Disable();
+}

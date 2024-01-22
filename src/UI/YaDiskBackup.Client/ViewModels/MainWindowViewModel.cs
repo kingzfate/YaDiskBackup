@@ -3,13 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using YaDiskBackup.Domain.Abstractions;
+using YaDiskBackup.Domain.Models;
 using YaDiskBackup.Domain.Properties;
-using YaDiskBackup.Infrastructure.Models;
 using YaDiskBackup.Shared.ViewModels;
-using YandexDisk.Client.Http;
-using YandexDisk.Client.Protocol;
 
 namespace YaDiskBackup.Client.ViewModels;
 
@@ -55,7 +52,7 @@ public class MainWindowViewModel : NavigationViewModelBase
     /// <param name="e"></param>
     private async void OnCreated(object source, FileSystemEventArgs e)
     {
-        if(CopiedFiles != null)
+        if(CopiedFiles.Value == null)
         {
             CopiedFiles.Value = new List<CopiedFile>();
         }
@@ -71,21 +68,23 @@ public class MainWindowViewModel : NavigationViewModelBase
         //    Link dictionaryAsync = await api.Commands.CreateDictionaryAsync("/" + ApplicationSettings.Default.DestinationFolder);
         //}
         //Link uploadLinkAsync = await api.Files.GetUploadLinkAsync("/" + ApplicationSettings.Default.DestinationFolder + "/" + e.Name.Split('\\').Last(), true);
-        do
-        { }
-        while (IsFileLocked(new FileInfo(e.FullPath)));
+        //do
+        //{ }
+        //while (IsFileLocked(new FileInfo(e.FullPath)));
 
         //using (FileStream fs = File.OpenRead(e.FullPath))
         //    await api.Files.UploadAsync(uploadLinkAsync, fs);
 
-        System.Windows.Application.Current.Dispatcher.Invoke(() =>
-        {
+        
+
+        //System.Windows.Application.Current.Dispatcher.Invoke(() =>
+        //{
             CopiedFiles.Value.Add(new CopiedFile
             {
                 Time = DateTime.Now.ToLocalTime(),
                 FileName = (e.Name.Split('\\')).Last()
             });
-        });
+       // });
     }
 
     protected bool IsFileLocked(FileInfo file)

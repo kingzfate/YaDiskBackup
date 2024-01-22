@@ -1,4 +1,4 @@
-﻿namespace YaDiskBackup.Infrastructure.Models
+﻿namespace YaDiskBackup.Domain.Models
 {
     /// <summary>
     /// Копируемые файлы
