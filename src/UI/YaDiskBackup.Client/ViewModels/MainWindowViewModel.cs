@@ -1,8 +1,12 @@
-﻿using Reactive.Bindings;
+﻿using DynamicData;
+using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Windows.Documents;
 using YaDiskBackup.Domain.Abstractions;
 using YaDiskBackup.Domain.Models;
 using YaDiskBackup.Domain.Properties;
@@ -16,14 +20,16 @@ namespace YaDiskBackup.Client.ViewModels;
 public class MainWindowViewModel : NavigationViewModelBase
 {
     public ReactiveProperty<IList<CopiedFile>> CopiedFiles { get; } = new();
+    ReadOnlyObservableCollection<CopiedFile> list;
 
-    public AsyncReactiveCommand Browse { get; } = new();
+    public ReactiveUI.ReactiveCommand Browse { get; } = new();
     public AsyncReactiveCommand EnableBackup { get; } = new();
     public AsyncReactiveCommand DisableBackup { get; } = new();
 
     /// <inheritdoc />
     public MainWindowViewModel(
-        IWindow window)
+        IWindow window,
+        IBackup backup)
     {
         Browse.Subscribe(async _ =>
         {
@@ -32,15 +38,30 @@ public class MainWindowViewModel : NavigationViewModelBase
 
         EnableBackup.Subscribe(async _ =>
         {
-            FileSystemWatcher watcher = new();
-            watcher = new FileSystemWatcher(ApplicationSettings.Default.SourcePath)
-            {
-                IncludeSubdirectories = ApplicationSettings.Default.IsSearchSubdir,
-                EnableRaisingEvents = true
-            };
-            watcher.NotifyFilter |= NotifyFilters.LastWrite;
-            watcher.Created += new FileSystemEventHandler(OnCreated);
+            backup.Enable();
+
+            backup.Live.Connect()
+                .Transform(file => new CopiedFile(file))
+                .ObserveOnDispatcher()
+                .Bind(out list)
+                .DisposeMany()
+                .Subscribe();
         });
+
+       
+
+
+        //EnableBackup.Subscribe(async _ =>
+        //{
+        //    FileSystemWatcher watcher = new();
+        //    watcher = new FileSystemWatcher(ApplicationSettings.Default.SourcePath)
+        //    {
+        //        IncludeSubdirectories = ApplicationSettings.Default.IsSearchSubdir,
+        //        EnableRaisingEvents = true
+        //    };
+        //    watcher.NotifyFilter |= NotifyFilters.LastWrite;
+        //    watcher.Created += new FileSystemEventHandler(OnCreated);
+        //});
     }
 
 
