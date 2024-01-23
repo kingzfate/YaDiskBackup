@@ -80,14 +80,14 @@
                     <Button Content="Enable" Command="{Binding EnableBackup}">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type Button}">
-                                <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
+                                <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused, Mode=TwoWay}"/>
                             </Style>
                         </FrameworkElement.Style>
                     </Button>
-                    <Button Grid.Column="1" Content="Disable" Command="{Binding DisableBackup}">
+                    <Button x:Name="Disable" Grid.Column="1" Content="Disable" Command="{Binding DisableBackup}">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type Button}">
-                                <Setter Property="UIElement.IsEnabled" Value="{Binding IsRunning}"/>
+                                <Setter Property="UIElement.IsEnabled" Value="{Binding Path = IsRunning}"/>
                             </Style>
                         </FrameworkElement.Style>
                     </Button>
