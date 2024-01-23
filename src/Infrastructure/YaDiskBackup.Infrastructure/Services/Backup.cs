@@ -1,25 +1,28 @@
 ﻿using DynamicData;
 using Scrutor.AspNetCore;
 using System.IO;
-using System.Reactive.Disposables;
 using YaDiskBackup.Domain.Abstractions;
 using YaDiskBackup.Domain.Models;
 using YaDiskBackup.Domain.Properties;
 
 namespace YaDiskBackup.Infrastructure.Services;
 
+/// <inheritdoc />
 public class Backup : IBackup, ISingletonLifetime
 {
+    /// <summary>
+    /// ctor
+    /// </summary>
     public Backup()
     {
         Live ??= new SourceList<CopiedFile>();
     }
 
-    //public IObservableCache<CopiedFile, long> Live { get; set; } = new();
     public SourceList<CopiedFile> Live { get; set; }
 
     FileSystemWatcher watcher = new();
 
+    /// <inheritdoc />
     public void Enable()
     {
         watcher = new FileSystemWatcher(ApplicationSettings.Default.SourcePath)
@@ -31,9 +34,11 @@ public class Backup : IBackup, ISingletonLifetime
         watcher.Created += new FileSystemEventHandler(OnCreated);
     }
 
+    /// <inheritdoc />
     public void Disable()
     {
-        throw new NotImplementedException();
+        watcher.EnableRaisingEvents = false;
+        watcher.Dispose();
     }
 
     /// <summary>
@@ -66,18 +71,10 @@ public class Backup : IBackup, ISingletonLifetime
         //using (FileStream fs = File.OpenRead(e.FullPath))
         //    await api.Files.UploadAsync(uploadLinkAsync, fs);
 
-        //System.Windows.Application.Current.Dispatcher.Invoke(() =>
-        //{
-        //    CopiedFiles.Value.Add(new CopiedFile
-        //    {
-        //        Time = DateTime.Now.ToLocalTime(),
-        //        FileName = (e.Name.Split('\\')).Last()
-        //    });
-        //});
         Live.Add(new CopiedFile
         {
             Time = DateTime.Now.ToLocalTime(),
-            FileName = (e.Name.Split('\\')).Last()
+            FileName = e.Name.Split('\\').Last()
         });
     }
 

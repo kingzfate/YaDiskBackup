@@ -13,6 +13,7 @@ public class Window : IWindow, ISingletonLifetime
         if (folderBrowserDialog.ShowDialog() != DialogResult.OK) 
             return;
 
+        //TODO Возможно надо вынести в другую область
         SavePath(folderBrowserDialog.SelectedPath);
     }
 

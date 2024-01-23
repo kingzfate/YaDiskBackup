@@ -8,23 +8,12 @@
     xmlns:core="clr-namespace:YaDiskBackup.Shared.Constants;assembly=YaDiskBackup.Shared"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:r="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.WPF"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
     xmlns:regions="http://prismlibrary.com/"
     xmlns:ui="http://schemas.modernwpf.com/2019"
     xmlns:vm="clr-namespace:YaDiskBackup.Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:p="clr-namespace:YaDiskBackup.Domain.Properties;assembly=YaDiskBackup.Domain" Closed="SaveData">
-    <!-- -->
-    <!-- x:Class="YaDiskBackup.Client.Views.MainWindow" -->
-    <!--     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" -->
-    <!--     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" -->
-    <!--     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" -->
-    <!--     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" -->
-    <!--     xmlns:local="clr-namespace:YaDiskBackup.Client" -->
-    <!--     xmlns:vm="clr-namespace:YaDiskBackup.Client.ViewModels" -->
-    <!--     xmlns:p="clr-namespace:YaDiskBackup.Client.Properties" -->
-    <!--     Title="YaDiskBackup" Height="230" Width="650" MinHeight="170" MinWidth="270"> -->
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -104,7 +93,7 @@
                     </Button>
                 </Grid>
             </Grid>
-            <ListView x:Name="listView" Grid.Column="1" HorizontalAlignment="Stretch" ItemsSource="{Binding list}">
+            <ListView x:Name="listView" Grid.Column="1" HorizontalAlignment="Stretch" ItemsSource="{Binding List}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Time}"/>

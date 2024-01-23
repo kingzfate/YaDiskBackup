@@ -17,9 +17,8 @@ public partial class App
         ServiceCollection serviceCollection = [];
         serviceCollection.AddAdvancedDependencyInjection();
 
-        var container = new UnityContainer().AddExtension(new Diagnostic());
+        IUnityContainer container = new UnityContainer().AddExtension(new Diagnostic());
         container.BuildServiceProvider(serviceCollection);
-
         
         return new UnityContainerExtension(container);
     }
