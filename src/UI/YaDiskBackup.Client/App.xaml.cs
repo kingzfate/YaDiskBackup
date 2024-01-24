@@ -40,14 +40,22 @@
 //        base.OnStartup(e);
 //    }
 //}
-
+//-----------------------------------------------------------------------------------------------
+using Autofac;
+using Autofac.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ReactiveUI;
 using Splat;
+using Splat.Autofac;
 using System;
+using System.ComponentModel;
+using System.Reflection;
 using System.Windows;
 using YaDiskBackup.Client.ViewModels;
 using YaDiskBackup.Client.Views;
+using YaDiskBackup.Domain.Abstractions;
+using YaDiskBackup.Infrastructure.Services;
 
 namespace YaDiskBackup.Client;
 
@@ -57,12 +65,66 @@ public partial class App : Application
     public App()
     {
         Bootstrapper.BuildIoC(); // Настраиваем IoC 
-        _logger = Locator.Current.GetService<ILogger>();
     }
 
-   
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+    }
 }
 
+public static class Bootstrapper
+{
+    public static void BuildIoC()
+    {
+        /*
+         * Создаем контейнер Autofac.
+         * Регистрируем сервисы и представления
+         */
+        var builder = new ContainerBuilder();
+        RegisterServices(builder);
+        RegisterViews(builder);
+        // Регистрируем Autofac контейнер в Splat
+        //var autofacResolver = builder.UseAutofacDependencyResolver();
+        //builder.RegisterInstance(autofacResolver);
+
+        //// Вызываем InitializeReactiveUI(), чтобы переопределить дефолтный Service Locator
+        //autofacResolver.InitializeReactiveUI();
+        //var lifetimeScope = builder.Build();
+        //autofacResolver.SetLifetimeScope(lifetimeScope);
+        var autofacResolver = builder.UseAutofacDependencyResolver();
+
+        // Register the resolver in Autofac so it can be later resolved.
+        builder.RegisterInstance(autofacResolver);
+
+        // Initialize ReactiveUI components.
+        autofacResolver.InitializeReactiveUI();
+    }
+
+    private static void RegisterServices(ContainerBuilder builder)
+    {
+        //builder.RegisterModule(new ApcCoreModule());
+        //builder.RegisterType<AppLogger>().As<ILogger>();
+        // Регистрируем профили ObjectMapper путем сканирования сборки
+        //var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
+        //typeAdapterConfig.Scan(Assembly.GetExecutingAssembly());
+    }
+
+    private static void RegisterViews(ContainerBuilder builder)
+    {
+        //Autofac.IContainer container = builder.Build();
+        //MainWindowViewModel mainViewModel = container.Resolve<MainWindowViewModel>();
+        builder.RegisterType<MainWindow>().As<IViewFor<MainWindowViewModel>>();
+        //builder.RegisterType<MessageWindow>().As < IViewFor << MessageWindowViewModel >> ().AsSelf();
+        builder.RegisterType<MainWindowViewModel>();
+        //builder.RegisterType<IBackup>();
+        //builder.RegisterType<IWindow>();
+        builder.RegisterType<Backup>().As<IBackup>();
+        builder.RegisterType<Infrastructure.Services.Window>().As<IWindow>();
+        //builder.RegisterType<MessageWindowViewModel>();
+    }
+}
+//-----------------------------------------------------------------------------------------------
 
 //using Microsoft.Extensions.DependencyInjection;
 //using Prism.Ioc;
@@ -96,5 +158,49 @@ public partial class App : Application
 //    protected override Window CreateShell()
 //    {
 //        return Container.Resolve<MainWindow>();
+//    }
+//}
+//--------------------------------------------------------------------------------------------------
+
+//using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.Extensions.Hosting;
+//using System.Windows;
+//using YaDiskBackup.Client.ViewModels;
+//using YaDiskBackup.Client.Views;
+//using YaDiskBackup.Domain.Abstractions;
+//using YaDiskBackup.Infrastructure.Services;
+
+//namespace YaDiskBackup.Client;
+
+//public partial class App : Application
+//{
+//    public static IHost? AppHost { get; private set; }
+
+//    public App()
+//    {
+//        AppHost = Host.CreateDefaultBuilder()
+//            .ConfigureServices((hostContext, services) =>
+//            {
+//                services.AddSingleton<MainWindow>();
+//                services.AddScoped<MainWindowViewModel>();
+//                services.AddSingleton<IBackup, Backup>();
+//            })
+//            .Build();
+//    }
+
+//    protected override async void OnStartup(StartupEventArgs e)
+//    {
+//        await AppHost!.StartAsync();
+
+//        var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
+//        startupForm.Show();
+
+//        base.OnStartup(e);
+//    }
+
+//    protected override async void OnExit(ExitEventArgs e)
+//    {
+//        await AppHost!.StopAsync();
+//        base.OnExit(e);
 //    }
 //}
