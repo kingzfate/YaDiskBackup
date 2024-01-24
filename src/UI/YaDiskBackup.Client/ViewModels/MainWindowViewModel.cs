@@ -1,16 +1,12 @@
 ﻿using DynamicData;
-using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using YaDiskBackup.Domain.Abstractions;
 using YaDiskBackup.Domain.Models;
-using YaDiskBackup.Shared.ViewModels;
 
 namespace YaDiskBackup.Client.ViewModels;
 

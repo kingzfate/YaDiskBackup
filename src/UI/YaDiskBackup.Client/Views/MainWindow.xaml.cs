@@ -1,11 +1,12 @@
-﻿using YaDiskBackup.Domain.Properties;
+﻿using System.Windows;
+using YaDiskBackup.Domain.Properties;
 
 namespace YaDiskBackup.Client.Views;
 
 /// <summary>
 /// Interaction logic for <see cref="MainWindow"/>.
 /// </summary>
-public partial class MainWindow
+public partial class MainWindow : Window
 {
     /// <inheritdoc />
     public MainWindow()

@@ -8,7 +8,7 @@ using YaDiskBackup.Domain.Properties;
 namespace YaDiskBackup.Infrastructure.Services;
 
 /// <inheritdoc />
-public class Backup : IBackup, ISingletonLifetime
+public class Backup : IBackup//, ISingletonLifetime
 {
     /// <summary>
     /// ctor

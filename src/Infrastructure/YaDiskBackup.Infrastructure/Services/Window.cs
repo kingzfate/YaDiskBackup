@@ -5,7 +5,7 @@ using YaDiskBackup.Domain.Properties;
 
 namespace YaDiskBackup.Infrastructure.Services;
 
-public class Window : IWindow, ISingletonLifetime
+public class Window : IWindow//, ISingletonLifetime
 {
     public void SelectSourcePath()
     {
