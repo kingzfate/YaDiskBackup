@@ -41,89 +41,108 @@
 //    }
 //}
 //-----------------------------------------------------------------------------------------------
-using Autofac;
-using Autofac.Core;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using ReactiveUI;
-using Splat;
-using Splat.Autofac;
-using System;
-using System.ComponentModel;
-using System.Reflection;
-using System.Windows;
-using YaDiskBackup.Client.ViewModels;
-using YaDiskBackup.Client.Views;
-using YaDiskBackup.Domain.Abstractions;
-using YaDiskBackup.Infrastructure.Services;
+//using Autofac;
+//using Autofac.Core;
+//using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.Extensions.Hosting;
+//using ReactiveUI;
+//using Splat;
+//using Splat.Autofac;
+//using System;
+//using System.ComponentModel;
+//using System.Reflection;
+//using System.Windows;
+//using YaDiskBackup.Client.ViewModels;
+//using YaDiskBackup.Client.Views;
+//using YaDiskBackup.Domain.Abstractions;
+//using YaDiskBackup.Infrastructure.Services;
 
-namespace YaDiskBackup.Client;
+//namespace YaDiskBackup.Client;
 
-/// <inheritdoc />
-public partial class App : Application
-{
-    public App()
-    {
-        Bootstrapper.BuildIoC(); // Настраиваем IoC 
-    }
+///// <inheritdoc />
+//public partial class App : Application
+//{
+//    public App()
+//    {
+//        Bootstrapper.BuildIoC(); // Настраиваем IoC 
+//    }
 
-    protected override void OnStartup(StartupEventArgs e)
-    {
-        base.OnStartup(e);
-    }
-}
+//    protected override void OnStartup(StartupEventArgs e)
+//    {
+//        base.OnStartup(e);
 
-public static class Bootstrapper
-{
-    public static void BuildIoC()
-    {
-        /*
-         * Создаем контейнер Autofac.
-         * Регистрируем сервисы и представления
-         */
-        var builder = new ContainerBuilder();
-        RegisterServices(builder);
-        RegisterViews(builder);
-        // Регистрируем Autofac контейнер в Splat
-        //var autofacResolver = builder.UseAutofacDependencyResolver();
-        //builder.RegisterInstance(autofacResolver);
+//        //var container = new ContainerBuilder();
+//        ////var viewModel = container.Resolve<MainViewModel>();
+//        //var window = new MainWindow { DataContext = viewModel };
 
-        //// Вызываем InitializeReactiveUI(), чтобы переопределить дефолтный Service Locator
-        //autofacResolver.InitializeReactiveUI();
-        //var lifetimeScope = builder.Build();
-        //autofacResolver.SetLifetimeScope(lifetimeScope);
-        var autofacResolver = builder.UseAutofacDependencyResolver();
+//        //window = new MainWindow
+//        //{
+//        //    //DataContext = new MainWindowViewModel().Instance
+//        //};
+//        //window.Show();
+//    }
+//}
 
-        // Register the resolver in Autofac so it can be later resolved.
-        builder.RegisterInstance(autofacResolver);
+//public static class Bootstrapper
+//{
+//    public static void BuildIoC()
+//    {
+//        /*
+//         * Создаем контейнер Autofac.
+//         * Регистрируем сервисы и представления
+//         */
+//        var builder = new ContainerBuilder();
+//        RegisterServices(builder);
+//        RegisterViews(builder);
+//        // Регистрируем Autofac контейнер в Splat
+//        //var autofacResolver = builder.UseAutofacDependencyResolver();
+//        //builder.RegisterInstance(autofacResolver);
 
-        // Initialize ReactiveUI components.
-        autofacResolver.InitializeReactiveUI();
-    }
+//        //// Вызываем InitializeReactiveUI(), чтобы переопределить дефолтный Service Locator
+//        //autofacResolver.InitializeReactiveUI();
+//        //var lifetimeScope = builder.Build();
+//        //autofacResolver.SetLifetimeScope(lifetimeScope);
+//        var autofacResolver = builder.UseAutofacDependencyResolver();
 
-    private static void RegisterServices(ContainerBuilder builder)
-    {
-        //builder.RegisterModule(new ApcCoreModule());
-        //builder.RegisterType<AppLogger>().As<ILogger>();
-        // Регистрируем профили ObjectMapper путем сканирования сборки
-        //var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
-        //typeAdapterConfig.Scan(Assembly.GetExecutingAssembly());
-    }
+//        // Register the resolver in Autofac so it can be later resolved.
+//        builder.RegisterInstance(autofacResolver);
 
-    private static void RegisterViews(ContainerBuilder builder)
-    {
-        //Autofac.IContainer container = builder.Build();
-        //MainWindowViewModel mainViewModel = container.Resolve<MainWindowViewModel>();
-        builder.RegisterType<MainWindow>().As<IViewFor<MainWindowViewModel>>();
-        //builder.RegisterType<MessageWindow>().As < IViewFor << MessageWindowViewModel >> ().AsSelf();
-        builder.RegisterType<MainWindowViewModel>();
-        //builder.RegisterType<IBackup>();
-        //builder.RegisterType<IWindow>();
-        builder.RegisterType<Backup>().As<IBackup>();
-        builder.RegisterType<Infrastructure.Services.Window>().As<IWindow>();
-        //builder.RegisterType<MessageWindowViewModel>();
-    }
-}
+//        // Initialize ReactiveUI components.
+//        autofacResolver.InitializeReactiveUI();
+//    }
+
+//    private static void RegisterServices(ContainerBuilder builder)
+//    {
+//        //builder.RegisterModule(new ApcCoreModule());
+//        //builder.RegisterType<AppLogger>().As<ILogger>();
+//        // Регистрируем профили ObjectMapper путем сканирования сборки
+//        //var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
+//        //typeAdapterConfig.Scan(Assembly.GetExecutingAssembly());
+//    }
+
+//    private static void RegisterViews(ContainerBuilder builder)
+//    {
+//        //Autofac.IContainer container = builder.Build();
+//        //MainWindowViewModel mainViewModel = container.Resolve<MainWindowViewModel>();
+//        builder.RegisterType<MainWindow>().As<IViewFor<MainWindowViewModel>>().SingleInstance();
+//        //builder.RegisterType<MessageWindow>().As < IViewFor << MessageWindowViewModel >> ().AsSelf();
+//        builder.RegisterType<MainWindowViewModel>().AsSelf().SingleInstance();
+//        //builder.RegisterType<MainWindow>().SingleInstance();
+//        //builder.RegisterType<IBackup>();
+//        //builder.RegisterType<IWindow>();
+//        builder.RegisterType<Backup>().As<IBackup>();
+//        builder.RegisterType<Infrastructure.Services.Window>().As<IWindow>();
+
+//        //builder.DataContext = new MainWindowViewModel();
+//        //builder.RegisterType<MessageWindowViewModel>();
+//    }
+//    private static Autofac.IContainer? Container;
+
+//    public static T Resolve<T>() where T : class
+//    {
+//        return Container.Resolve<T>();
+//    }
+//}
 //-----------------------------------------------------------------------------------------------
 
 //using Microsoft.Extensions.DependencyInjection;
@@ -204,3 +223,46 @@ public static class Bootstrapper
 //        base.OnExit(e);
 //    }
 //}
+
+
+
+using ReactiveUI;
+using Splat;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Forms;
+using YaDiskBackup.Client.ViewModels;
+using YaDiskBackup.Client.Views;
+using YaDiskBackup.Domain.Abstractions;
+using YaDiskBackup.Infrastructure.Services;
+
+namespace YaDiskBackup.Client;
+
+/// <inheritdoc />
+public partial class App : System.Windows.Application
+{
+    public App()
+    {
+        Locator.CurrentMutable.Register(() => new MainWindow(), typeof(IViewFor<MainWindowViewModel>));
+        //var a = 1 + 1;
+        //Locator.CurrentMutable.RegisterConstant(new MainWindow(), typeof(MainWindowViewModel));
+        Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
+        Locator.CurrentMutable.RegisterConstant(new YaDiskBackup.Infrastructure.Services.Window(), typeof(IWindow));
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+
+        // Create ShellViewModel and register as IScreen
+        //var viewModel = new MainWindowViewModel(new YaDiskBackup.Infrastructure.Services.Window(), new Backup());
+        //Locator.CurrentMutable.RegisterConstant(viewModel, typeof(IScreen));
+        //// Resolve view for ShellViewModel
+        //var view = ViewLocator.Current.ResolveView(viewModel);
+        //view.ViewModel = viewModel;
+        //// Run application
+        //System.Windows.Forms.Application.Run((Form)view);
+        var mainWindow = new MainWindow();
+        mainWindow.Show();
+    }
+}

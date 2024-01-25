@@ -1,6 +1,7 @@
 ﻿using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
@@ -55,6 +56,7 @@ public class MainWindowViewModel : ReactiveObject
         IWindow window,
         IBackup backup)
     {
+        Locator.CurrentMutable.RegisterConstant(this, typeof(MainWindowViewModel));
 
         Browse = ReactiveCommand.Create(
              window.SelectSourcePath
