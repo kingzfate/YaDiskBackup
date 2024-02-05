@@ -56,26 +56,21 @@ public class MainWindowViewModel : ReactiveObject
         IWindow window,
         IBackup backup)
     {
-        Locator.CurrentMutable.RegisterConstant(this, typeof(MainWindowViewModel));
-
         Browse = ReactiveCommand.Create(
              window.SelectSourcePath
         );
-        EnableBackup = ReactiveCommand.Create(() =>
-        {
-            backup.Enable();
+        //EnableBackup = ReactiveCommand.Create(() =>
+        //{
+        //    backup.Enable();
 
-            IsPaused = false;
-            IsRunning = true;
+        //    IsPaused = false;
+        //    IsRunning = true;
 
-            //Test = "PREDEV";
+        //    //Test = "PREDEV";
 
-            //this.WhenAnyValue(x => x.IsRunning)                
-            //    .ToPropertyEx(this, x => x.);
-        });
-
-        //this.WhenAnyObservable(x => x.EnableBackup).Subscribe(x => x.);
-
+        //    //this.WhenAnyValue(x => x.IsRunning)                
+        //    //    .ToPropertyEx(this, x => x.);
+        //});
 
         DisableBackup = ReactiveCommand.Create(() =>
         {

@@ -1,18 +1,14 @@
 ﻿<Window 
     Title="YaDiskBackup" Height="230" Width="650" MinHeight="170" MinWidth="270"
-    WindowStartupLocation="CenterScreen"
-    
+    WindowStartupLocation="CenterScreen"  
     mc:Ignorable="d"
     x:Class="YaDiskBackup.Client.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
-    xmlns:regions="http://prismlibrary.com/"
-    xmlns:ui="http://schemas.modernwpf.com/2019"
-    xmlns:vm="clr-namespace:YaDiskBackup.Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:p="clr-namespace:YaDiskBackup.Domain.Properties;assembly=YaDiskBackup.Domain" Closed="SaveData">
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:p="clr-namespace:YaDiskBackup.Domain.Properties;assembly=YaDiskBackup.Domain" xmlns:viewmodels="clr-namespace:YaDiskBackup.Client.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
+    Closed="SaveData">
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -39,7 +35,7 @@
                             <ColumnDefinition Width="40*"/>
                             <ColumnDefinition Width="140*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="..." Command="{Binding Browse}">
+                        <Button Grid.Column="0" Content="..." Command="{Binding Browse}" Name="Browse">
                             <FrameworkElement.Style>
                                 <Style TargetType="{x:Type Button}">
                                     <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
