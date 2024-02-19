@@ -9,12 +9,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Domain\YaDiskBackup.Domain\YaDiskBackup.Domain.csproj" />
+      <PackageReference Include="YandexDisk.Client" Version="1.3.27" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Scrutor.AspNetCore" Version="3.3.0" />
-      <PackageReference Include="YandexDisk.Client" Version="1.3.27" />
+      <ProjectReference Include="..\..\Application\YaDiskBackup.Application\YaDiskBackup.Application.csproj" />
     </ItemGroup>
 
 </Project>

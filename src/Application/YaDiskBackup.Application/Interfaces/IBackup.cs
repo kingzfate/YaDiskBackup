@@ -1,7 +1,7 @@
 ﻿using DynamicData;
-using YaDiskBackup.Domain.Models;
+using YaDiskBackup.Application.Models;
 
-namespace YaDiskBackup.Domain.Abstractions;
+namespace YaDiskBackup.Application.Interfaces;
 
 /// <summary>
 /// Backup file to yandex disk
@@ -9,14 +9,14 @@ namespace YaDiskBackup.Domain.Abstractions;
 public interface IBackup
 {
     /// <summary>
-    /// Enable file watcher
-    /// </summary>
-    void Enable();
-
-    /// <summary>
     /// List of copied file to yandex disk
     /// </summary>
     SourceList<CopiedFile> Live { get; set; }
+
+    /// <summary>
+    /// Enable file watcher
+    /// </summary>
+    void Enable();
 
     /// <summary>
     /// Disable file watcher

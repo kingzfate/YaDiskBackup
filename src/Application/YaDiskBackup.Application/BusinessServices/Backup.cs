@@ -1,24 +1,22 @@
 ﻿using DynamicData;
-using Scrutor.AspNetCore;
-using System.IO;
-using YaDiskBackup.Domain.Abstractions;
-using YaDiskBackup.Domain.Models;
-using YaDiskBackup.Domain.Properties;
+using YaDiskBackup.Application.Interfaces;
+using YaDiskBackup.Application.Models;
+using YaDiskBackup.Application.Properties;
 
-namespace YaDiskBackup.Infrastructure.Services;
+namespace YaDiskBackup.Application.BusinessServices;
 
 /// <inheritdoc />
-public class Backup : IBackup//, ISingletonLifetime
+public class Backup : IBackup
 {
-    /// <summary>
-    /// ctor
-    /// </summary>
+    public SourceList<CopiedFile> Live { get; set; }
+
+    /// <inheritdoc />
     public Backup()
     {
         Live ??= new SourceList<CopiedFile>();
     }
 
-    public SourceList<CopiedFile> Live { get; set; }
+    
 
     FileSystemWatcher watcher = new();
 
@@ -78,7 +76,7 @@ public class Backup : IBackup//, ISingletonLifetime
         });
     }
 
-    protected bool IsFileLocked(FileInfo file)
+    private bool IsFileLocked(FileInfo file)
     {
         try
         {

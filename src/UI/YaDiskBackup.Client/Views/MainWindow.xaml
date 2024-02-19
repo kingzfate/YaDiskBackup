@@ -7,8 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:p="clr-namespace:YaDiskBackup.Domain.Properties;assembly=YaDiskBackup.Domain" xmlns:viewmodels="clr-namespace:YaDiskBackup.Client.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
-    Closed="SaveData">
+    xmlns:p="clr-namespace:YaDiskBackup.Application.Properties;assembly=YaDiskBackup.Application" xmlns:viewmodels="clr-namespace:YaDiskBackup.Client.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}">
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -22,7 +21,7 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="190">
                     <TextBlock Text="Destination folder" ToolTip="Folder in Yandex Disk where files will be copied"/>
-                    <TextBox Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=DestinationFolder, Mode=TwoWay}">
+                    <TextBox Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=DestinationFolder, Mode=TwoWay}" LostFocus="SaveData">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type TextBox}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
@@ -42,7 +41,7 @@
                                 </Style>
                             </FrameworkElement.Style>
                         </Button>
-                        <TextBox Grid.Column="1" Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=SourcePath, Mode=TwoWay}">
+                        <TextBox Grid.Column="1" Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=SourcePath, Mode=TwoWay}" LostFocus="SaveData">
                             <FrameworkElement.Style>
                                 <Style TargetType="{x:Type TextBox}">
                                     <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
@@ -51,7 +50,7 @@
                         </TextBox>
                     </Grid>
                     <TextBlock Text="Token" ToolTip="Yandex token"/>
-                    <TextBox Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=Token, Mode=TwoWay}">
+                    <TextBox Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=Token, Mode=TwoWay}" LostFocus="SaveData">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type TextBox}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
@@ -59,7 +58,7 @@
                         </FrameworkElement.Style>
                     </TextBox>
                     <CheckBox Content="Search in subdirectories" ToolTip="Search for files to copy in subdirectories "
-                    IsChecked="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=IsSearchSubdir, Mode=TwoWay}">
+                    IsChecked="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=IsSearchSubdir, Mode=TwoWay}" LostFocus="SaveData">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type CheckBox}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>

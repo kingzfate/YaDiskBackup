@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Domain\YaDiskBackup.Domain\YaDiskBackup.Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructure\YaDiskBackup.Infrastructure\YaDiskBackup.Infrastructure.csproj" />
   </ItemGroup>
 
