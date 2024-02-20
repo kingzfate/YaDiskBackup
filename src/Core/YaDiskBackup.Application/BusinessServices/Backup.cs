@@ -10,15 +10,15 @@ namespace YaDiskBackup.Application.BusinessServices;
 /// <inheritdoc />
 public class Backup : IBackup
 {
+    /// <summary>
+    /// List of copied file to yandex disk
+    /// </summary>
     public SourceList<CopiedFile> Live { get; set; } = new SourceList<CopiedFile>();
 
+    /// <summary>
+    /// File watcher
+    /// </summary>
     FileSystemWatcher watcher = new();
-
-    /// <inheritdoc />
-    public Backup()
-    {
-        //Live ??= new SourceList<CopiedFile>();
-    }
 
     /// <inheritdoc />
     public void Enable()
@@ -41,41 +41,57 @@ public class Backup : IBackup
     }
 
     /// <summary>
-    ///
+    /// The method starts as soon as it is clear that a new file has appeared in the folder
     /// </summary>
     /// <param name="source"></param>
     /// <param name="e"></param>
     private async void OnCreated(object source, FileSystemEventArgs e)
     {
-        //Live ??= new SourceList<CopiedFile>();
-        using (DiskHttpApi api = new(ApplicationSettings.Default.Token))
-        {
-            ResourceRequest request = new()
-            {
-                Path = "/"
-            };
-            CancellationToken cancellationToken = new();
+        string fileName = e.Name.Split('\\').Last();
 
-            if (!(await api.MetaInfo.GetInfoAsync(request, cancellationToken)).Embedded.Items.Any(item => item.Type == ResourceType.Dir && item.Name.Equals(ApplicationSettings.Default.DestinationFolder)))
-            {
-                Link dictionaryAsync = await api.Commands.CreateDictionaryAsync("/" + ApplicationSettings.Default.DestinationFolder);
-            }
-
-            Link uploadLinkAsync = await api.Files.GetUploadLinkAsync("/" + ApplicationSettings.Default.DestinationFolder + "/" + e.Name.Split('\\').Last(), true);
-
-            while (IsFileLocked(new FileInfo(e.FullPath))) { }
-
-            using (FileStream fs = File.OpenRead(e.FullPath))
-                await api.Files.UploadAsync(uploadLinkAsync, fs);
-
-            Live.Add(new CopiedFile
-            {
-                Time = DateTime.Now.ToLocalTime(),
-                FileName = e.Name.Split('\\').Last()
-            });
-        }
+        await SendFile(fileName, e.FullPath);
+        SaveInformationAboutFile(fileName);
     }
 
+    /// <summary>
+    /// Send the received file to yandex.disk
+    /// </summary>
+    /// <param name="fileName"></param>
+    private async Task SendFile(string fileName, string filePath)
+    {
+        using DiskHttpApi api = new(ApplicationSettings.Default.Token);
+
+        ResourceRequest request = new()
+        {
+            Path = "/"
+        };
+        
+        Link uploadLinkAsync = await api.Files.GetUploadLinkAsync("/" + ApplicationSettings.Default.DestinationFolder + "/" + fileName, true);
+
+        while (IsFileLocked(new FileInfo(filePath))) { }
+
+        using FileStream fs = File.OpenRead(filePath);
+        await api.Files.UploadAsync(uploadLinkAsync, fs);
+    }
+
+    /// <summary>
+    /// Save the file information in the application table
+    /// </summary>
+    /// <param name="fileName">File name</param>
+    private void SaveInformationAboutFile(string fileName)
+    {
+        Live.Add(new CopiedFile
+        {
+            Time = DateTime.Now.ToLocalTime(),
+            FileName = fileName
+        });
+    }
+
+    /// <summary>
+    /// We check if the file is blocked in order to continue working with it
+    /// </summary>
+    /// <param name="file">Info about current file</param>
+    /// <returns>Locked or not</returns>
     private bool IsFileLocked(FileInfo file)
     {
         try
