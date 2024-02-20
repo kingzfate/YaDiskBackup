@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YaDiskBackup.Infrastructure", "src\Infrastructure\YaDiskBackup.Infrastructure\YaDiskBackup.Infrastructure.csproj", "{672F85B1-1951-4F66-86AA-D6C4ADFC2EB4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{9FC48211-2558-46F0-A3C1-280F80CB1563}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9FC48211-2558-46F0-A3C1-280F80CB1563}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YaDiskBackup.Application", "src\Application\YaDiskBackup.Application\YaDiskBackup.Application.csproj", "{DDC0B68B-65C9-4F94-917C-3F5220A245B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YaDiskBackup.Application", "src\Core\YaDiskBackup.Application\YaDiskBackup.Application.csproj", "{DDC0B68B-65C9-4F94-917C-3F5220A245B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
