@@ -1,20 +1,29 @@
-﻿using YaDiskBackup.Domain.Properties;
+﻿using Splat;
+using System.Windows;
+using YaDiskBackup.Application.Interfaces;
+using YaDiskBackup.Client.ViewModels;
 
 namespace YaDiskBackup.Client.Views;
 
 /// <summary>
 /// Interaction logic for <see cref="MainWindow"/>.
 /// </summary>
-public partial class MainWindow
+public partial class MainWindow : Window
 {
+    private readonly ISettings Settings;
+
     /// <inheritdoc />
-    public MainWindow()
+    public MainWindow(ISettings settings)
     {
         InitializeComponent();
+        DataContext = Locator.Current.GetService<MainWindowViewModel>();
+        Settings = settings;
     }
 
-    //TODO переделать сохранение данных после того как они будут заполнены
-    private void SaveData(object sender, System.EventArgs e) => ApplicationSettings.Default.Save();
-
-   //private void Window_Closed(object sender, System.EventArgs e) 
+    /// <summary>
+    /// Save all settings for application
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void SaveData(object sender, RoutedEventArgs e) => Settings.Save();
 }

@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="YaDiskBackup.Domain.Properties" GeneratedClassName="ApplicationSettings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="YaDiskBackup.Application.Properties" GeneratedClassName="ApplicationSettings">
   <Profiles />
   <Settings>
     <Setting Name="IsSearchSubdir" Type="System.Boolean" Scope="User">
