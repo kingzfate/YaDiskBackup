@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    ResizeMode="NoResize"
     xmlns:p="clr-namespace:YaDiskBackup.Application.Properties;assembly=YaDiskBackup.Application" xmlns:viewmodels="clr-namespace:YaDiskBackup.Client.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}">
     <Grid>
         <Grid>
@@ -20,28 +21,28 @@
                     <RowDefinition Height="20*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="190">
-                    <TextBlock Text="Destination folder" ToolTip="Folder in Yandex Disk where files will be copied"/>
-                    <TextBox Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=DestinationFolder, Mode=TwoWay}" LostFocus="SaveData">
+                    <TextBlock x:Name="TextBlockDestinationFolderText" Text="Destination folder" ToolTip="Folder in Yandex Disk where files will be copied"/>
+                    <TextBox x:Name="TextBoxDestionationFolderName" Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=DestinationFolder, Mode=TwoWay}" LostFocus="SaveData">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type TextBox}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
                             </Style>
                         </FrameworkElement.Style>
                     </TextBox>
-                    <TextBlock Text="Source path" ToolTip="Path from the local computer where data will be taken for copying "/>
+                    <TextBlock x:Name="TextBlockSourcePathText" Text="Source path" ToolTip="Path from the local computer where data will be taken for copying "/>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40*"/>
+                            <ColumnDefinition Width="30*"/>
                             <ColumnDefinition Width="140*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="..." Command="{Binding Browse}" Name="Browse">
+                        <Button Grid.Column="0" Content="..." Command="{Binding Browse}" x:Name="ButtonBrowse">
                             <FrameworkElement.Style>
                                 <Style TargetType="{x:Type Button}">
                                     <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
                                 </Style>
                             </FrameworkElement.Style>
                         </Button>
-                        <TextBox Grid.Column="1" Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=SourcePath, Mode=TwoWay}" LostFocus="SaveData">
+                        <TextBox x:Name="TextBlockPath" Grid.Column="1" Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=SourcePath, Mode=TwoWay}" LostFocus="SaveData">
                             <FrameworkElement.Style>
                                 <Style TargetType="{x:Type TextBox}">
                                     <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
@@ -49,15 +50,15 @@
                             </FrameworkElement.Style>
                         </TextBox>
                     </Grid>
-                    <TextBlock Text="Token" ToolTip="Yandex token"/>
-                    <TextBox Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=Token, Mode=TwoWay}" LostFocus="SaveData">
+                    <TextBlock x:Name="TextBlockToken" Text="Token" ToolTip="Yandex token"/>
+                    <TextBox x:Name="TextBoxToken" Text="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=Token, Mode=TwoWay}" LostFocus="SaveData">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type TextBox}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused}"/>
                             </Style>
                         </FrameworkElement.Style>
                     </TextBox>
-                    <CheckBox Content="Search in subdirectories" ToolTip="Search for files to copy in subdirectories "
+                    <CheckBox x:Name="CheckBoxSubDirectories" Content="Search in subdirectories" ToolTip="Search for files to copy in subdirectories "
                     IsChecked="{Binding Source={x:Static p:ApplicationSettings.Default}, Path=IsSearchSubdir, Mode=TwoWay}" LostFocus="SaveData">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type CheckBox}">
@@ -71,14 +72,14 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Enable" Command="{Binding EnableBackup}">
+                    <Button x:Name="ButtonEnableBackup" Content="Enable" Command="{Binding EnableBackup}">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding IsPaused, Mode=TwoWay}"/>
                             </Style>
                         </FrameworkElement.Style>
                     </Button>
-                    <Button x:Name="Disable" Grid.Column="1" Content="Disable" Command="{Binding DisableBackup}">
+                    <Button x:Name="ButtonDisableBackup" Grid.Column="1" Content="Disable" Command="{Binding DisableBackup}">
                         <FrameworkElement.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="UIElement.IsEnabled" Value="{Binding Path = IsRunning}"/>
@@ -87,11 +88,11 @@
                     </Button>
                 </Grid>
             </Grid>
-            <ListView x:Name="listView" Grid.Column="1" HorizontalAlignment="Stretch" ItemsSource="{Binding List}">
+            <ListView x:Name="ListViewBackupFiles" Grid.Column="1" HorizontalAlignment="Stretch" ItemsSource="{Binding List}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Time}"/>
-                        <GridViewColumn Header="FileName" DisplayMemberBinding="{Binding FileName}"/>
+                        <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Time}" Width="140"/>
+                        <GridViewColumn Header="FileName" DisplayMemberBinding="{Binding FileName}" Width="290"/>
                     </GridView>
                 </ListView.View>
             </ListView>

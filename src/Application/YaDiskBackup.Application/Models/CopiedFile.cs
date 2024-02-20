@@ -5,13 +5,6 @@
 /// </summary>
 public class CopiedFile
 {
-    private readonly CopiedFile _file;
-
-    public CopiedFile(CopiedFile file = null)
-    {
-        _file = file;
-    }
-
     /// <summary>
     /// Время копирования
     /// </summary>

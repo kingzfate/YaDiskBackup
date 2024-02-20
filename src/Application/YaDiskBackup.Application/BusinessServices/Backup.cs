@@ -1,4 +1,6 @@
 ﻿using DynamicData;
+using Egorozh.YandexDisk.Client.Http;
+using Egorozh.YandexDisk.Client.Protocol;
 using YaDiskBackup.Application.Interfaces;
 using YaDiskBackup.Application.Models;
 using YaDiskBackup.Application.Properties;
@@ -8,17 +10,15 @@ namespace YaDiskBackup.Application.BusinessServices;
 /// <inheritdoc />
 public class Backup : IBackup
 {
-    public SourceList<CopiedFile> Live { get; set; }
+    public SourceList<CopiedFile> Live { get; set; } = new SourceList<CopiedFile>();
+
+    FileSystemWatcher watcher = new();
 
     /// <inheritdoc />
     public Backup()
     {
-        Live ??= new SourceList<CopiedFile>();
+        //Live ??= new SourceList<CopiedFile>();
     }
-
-    
-
-    FileSystemWatcher watcher = new();
 
     /// <inheritdoc />
     public void Enable()
@@ -28,6 +28,7 @@ public class Backup : IBackup
             IncludeSubdirectories = ApplicationSettings.Default.IsSearchSubdir,
             EnableRaisingEvents = true
         };
+
         watcher.NotifyFilter |= NotifyFilters.LastWrite;
         watcher.Created += new FileSystemEventHandler(OnCreated);
     }
@@ -46,34 +47,33 @@ public class Backup : IBackup
     /// <param name="e"></param>
     private async void OnCreated(object source, FileSystemEventArgs e)
     {
-        if (Live == null)
+        //Live ??= new SourceList<CopiedFile>();
+        using (DiskHttpApi api = new(ApplicationSettings.Default.Token))
         {
-            Live = new SourceList<CopiedFile>();
+            ResourceRequest request = new()
+            {
+                Path = "/"
+            };
+            CancellationToken cancellationToken = new();
+
+            //if (!(await api.MetaInfo.GetInfoAsync(request, cancellationToken)).Embedded.Items.Any(item => item.Type == ResourceType.Dir && item.Name.Equals(ApplicationSettings.Default.DestinationFolder)))
+            //{
+            //    Link dictionaryAsync = await api.Commands.CreateDictionaryAsync("/" + ApplicationSettings.Default.DestinationFolder);
+            //}
+
+            Link uploadLinkAsync = await api.Files.GetUploadLinkAsync("/" + ApplicationSettings.Default.DestinationFolder + "/" + e.Name.Split('\\').Last(), true);
+
+            while (IsFileLocked(new FileInfo(e.FullPath))) { }
+
+            using (FileStream fs = File.OpenRead(e.FullPath))
+                await api.Files.UploadAsync(uploadLinkAsync, fs);
+
+            Live.Add(new CopiedFile
+            {
+                Time = DateTime.Now.ToLocalTime(),
+                FileName = e.Name.Split('\\').Last()
+            });
         }
-        //using DiskHttpApi api = new(ApplicationSettings.Default.Token);
-
-        //ResourceRequest request = new()
-        //{
-        //    Path = "/"
-        //};
-        //CancellationToken cancellationToken = new();
-        //if (!(await api.MetaInfo.GetInfoAsync(request, cancellationToken)).Embedded.Items.Any(item => item.Type == ResourceType.Dir && item.Name.Equals(ApplicationSettings.Default.DestinationFolder)))
-        //{
-        //    Link dictionaryAsync = await api.Commands.CreateDictionaryAsync("/" + ApplicationSettings.Default.DestinationFolder);
-        //}
-        //Link uploadLinkAsync = await api.Files.GetUploadLinkAsync("/" + ApplicationSettings.Default.DestinationFolder + "/" + e.Name.Split('\\').Last(), true);
-        //do
-        //{ }
-        //while (IsFileLocked(new FileInfo(e.FullPath)));
-
-        //using (FileStream fs = File.OpenRead(e.FullPath))
-        //    await api.Files.UploadAsync(uploadLinkAsync, fs);
-
-        Live.Add(new CopiedFile
-        {
-            Time = DateTime.Now.ToLocalTime(),
-            FileName = e.Name.Split('\\').Last()
-        });
     }
 
     private bool IsFileLocked(FileInfo file)

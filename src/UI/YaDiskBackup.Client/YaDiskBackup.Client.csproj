@@ -1,23 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <UseWindowsForms>True</UseWindowsForms>
-    <ImplicitUsings>disable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>True</UseWindowsForms>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
+		<Company>Sever Code</Company>
+		<VersionPrefix>1.0</VersionPrefix>
+		<Description>An application for performing backups and saving data to Yandex disk</Description>
+		<PackageIcon>ico.png</PackageIcon>
+		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+		<FileVersion>$(VersionPrefix)</FileVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ReactiveUI" Version="19.5.41" />
-    <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
-    <PackageReference Include="ReactiveUI.WPF" Version="19.5.41" />
-    <PackageReference Include="Splat.Autofac" Version="14.8.12" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DebugType>none</DebugType>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\YaDiskBackup.Infrastructure\YaDiskBackup.Infrastructure.csproj" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <DebugType>none</DebugType>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="C:\Users\NikAv\Desktop\ico.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ReactiveUI" Version="19.5.41" />
+		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
+		<PackageReference Include="ReactiveUI.WPF" Version="19.5.41" />
+		<PackageReference Include="Splat.Autofac" Version="14.8.12" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Infrastructure\YaDiskBackup.Infrastructure\YaDiskBackup.Infrastructure.csproj" />
+	</ItemGroup>
 
 </Project>
