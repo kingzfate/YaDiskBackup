@@ -59,7 +59,7 @@ The application will be useful for those who want to save their backup data and 
 The application is developed using
 
 * WPF
-* C#
+* C# 12
 * .NET 8
 * ReactiveUI
 
