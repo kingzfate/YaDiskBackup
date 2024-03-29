@@ -36,9 +36,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ReactiveUI" Version="19.5.41" />
+		<PackageReference Include="ReactiveUI" Version="19.6.1" />
 		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
-		<PackageReference Include="ReactiveUI.WPF" Version="19.5.41" />
+		<PackageReference Include="ReactiveUI.WPF" Version="19.6.1" />
 		<PackageReference Include="Splat.Autofac" Version="14.8.12" />
 	</ItemGroup>
 

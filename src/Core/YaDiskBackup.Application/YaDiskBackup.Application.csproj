@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DynamicData" Version="8.3.27" />
+    <PackageReference Include="DynamicData" Version="8.4.1" />
     <PackageReference Include="Egorozh.YandexDisk.Client" Version="8.0.10" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
   </ItemGroup>
