@@ -9,7 +9,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a>
     <img src="src/UI/YaDiskBackup.Client/Resources/ico.png" alt="Logo" width="128" height="128">
   </a>
 
